@@ -35,12 +35,12 @@ typedef enum {
 
 @protocol UITableViewDataSource, UITableViewDelegate;
 
-UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView <NSCoding> {
+UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView {
 @private
     UITableViewStyle            _style;
 	
-    id<UITableViewDataSource>  _dataSource;
-    id<UITableViewDelegate>  _delegate;
+    id<UITableViewDataSource>	_dataSource;
+    id<UITableViewDelegate>		_delegate;
     
     id                          _rowData;
     CGFloat                     _rowHeight;
@@ -183,51 +183,55 @@ UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView <NSCoding> {
 @property(nonatomic)          CGFloat                    sectionHeaderHeight;   // will return the default value if unset
 @property(nonatomic)          CGFloat                    sectionFooterHeight;   // will return the default value if unset
 
-// Data
-
-- (void)reloadData;                 // reloads everything from scratch. redisplays visible rows. because we only keep info about visible rows, this is cheap. will adjust offset if table shrinks
-- (void)reloadSectionIndexTitles __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);   // reloads the index bar.
+/* Data
+ * Reloads everything from scratch. redisplays visible rows. because we only keep
+ * info about visible rows, this is cheap. will adjust offset if table shrinks
+ */
+- (void)reloadData;
 
 // Info
 
 - (NSInteger)numberOfSections;
 - (NSInteger)numberOfRowsInSection:(NSInteger)section;
 
-- (CGRect)rectForSection:(NSInteger)section;                                    // includes header, footer and all rows
-- (CGRect)rectForHeaderInSection:(NSInteger)section;
-- (CGRect)rectForFooterInSection:(NSInteger)section;
-- (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath;
+/*
+- (NSRect)rectForSection:(NSInteger)section;									// includes header, footer and all rows
+- (NSRect)rectForHeaderInSection:(NSInteger)section;
+- (NSRect)rectForFooterInSection:(NSInteger)section;
+- (NSRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;                         // returns nil if point is outside table
-- (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell;                      // returns nil if cell is not visible
-- (NSArray *)indexPathsForRowsInRect:(CGRect)rect;                              // returns nil if rect not valid 
+- (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;							// returns nil if point is outside table
+- (NSIndexPath *)indexPathForCell:(UITableViewCell*)cell;						// returns nil if cell is not visible
+- (NSArray *)indexPathsForRowsInRect:(NSRect)rect;								// returns nil if rect not valid 
+*/
 
-- (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;            // returns nil if cell is not visible or index path is out of range
-- (NSArray *)visibleCells;
-- (NSArray *)indexPathsForVisibleRows;
+- (UITableViewCell*)cellForRowAtIndexPath:(NSIndexPath*)indexPath;				// returns nil if cell is not visible or index path is out of range
+- (NSArray*)visibleCells;
+- (NSArray*)indexPathsForVisibleRows;
 
 - (void)scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UITableViewScrollPosition)scrollPosition animated:(BOOL)animated;
 - (void)scrollToNearestSelectedRowAtScrollPosition:(UITableViewScrollPosition)scrollPosition animated:(BOOL)animated;
 
 // Row insertion/deletion/reloading.
-
+/*
 - (void)beginUpdates;   // allow multiple insert/delete of rows and sections to be animated simultaneously. Nestable
 - (void)endUpdates;     // only call insert/delete/reload calls inside an update block.  otherwise things like row count, etc. may be invalid.
 
 - (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
-- (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);
+- (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
 
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
-- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
+*/
 
 // Editing. When set, rows show insert/delete/reorder controls based on data source queries
 
 @property(nonatomic,getter=isEditing) BOOL editing;                             // default is NO. setting is not animated.
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 
-@property(nonatomic) BOOL allowsSelection __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);  // default is YES. Controls whether rows can be selected when not in editing mode
+@property(nonatomic) BOOL allowsSelection;										// default is YES. Controls whether rows can be selected when not in editing mode
 @property(nonatomic) BOOL allowsSelectionDuringEditing;                         // default is NO. Controls whether rows can be selected when in editing mode
 
 // Selection
@@ -240,13 +244,11 @@ UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView <NSCoding> {
 
 // Appearance
 
-@property(nonatomic) NSInteger sectionIndexMinimumDisplayRowCount;              // show special section index list on right when row count reaches this value. default is NSInteger Max
-
 @property(nonatomic) UITableViewCellSeparatorStyle separatorStyle;              // default is UITableViewCellSeparatorStyleSingleLine
-@property(nonatomic,retain) NSColor               *separatorColor;              // default is the standard separator gray
+@property(nonatomic,retain) NSColor* separatorColor;							// default is the standard separator gray
 
-@property(nonatomic,retain) UIView *tableHeaderView;                            // accessory view for above row content. default is nil. not to be confused with section header
-@property(nonatomic,retain) UIView *tableFooterView;                            // accessory view below content. default is nil. not to be confused with section footer
+@property(nonatomic,retain) UIView* tableHeaderView;                            // accessory view for above row content. default is nil. not to be confused with section header
+@property(nonatomic,retain) UIView* tableFooterView;                            // accessory view below content. default is nil. not to be confused with section footer
 
 - (UITableViewCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier;  // Used by the delegate to acquire an already allocated cell, in lieu of allocating a new one.
 
