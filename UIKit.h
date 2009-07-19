@@ -8,9 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define UIFont NSFont
-
 #import <UIKit/UIView.h>
+#import <UIKit/UIFont.h>
 #import <UIKit/UIColor.h>
 #import <UIKit/UIImage.h>
 #import <UIKit/UILabel.h>

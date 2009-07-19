@@ -8,6 +8,7 @@
 
 #import <UIKit/UITableView.h>
 #import "UIColor.h"
+#import "UITableViewCell-Private.h"
 
 
 @implementation UITableView
@@ -56,6 +57,30 @@
 			}
 		} else {
 			height += rows * self.rowHeight;
+		}
+	}
+	
+	// We'll rewrite this later to only use the needed amount of rows
+	float yOffset = 0.0f;
+	for(int section = 0; section < sections; section++) {
+		NSInteger rows = [self.dataSource tableView:self numberOfRowsInSection:section];
+		for(int row = 0; row < rows; row++) {
+			CGFloat rowHeight = self.rowHeight;
+			NSIndexPath* indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+			
+			if(variableRowHeights) {
+				rowHeight = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
+			}
+			
+			UITableViewCell* aCell = [self.dataSource tableView:self cellForRowAtIndexPath:indexPath];
+			if(!aCell.separatorColor) aCell.separatorColor = _separatorColor;
+			
+			aCell.frame = NSMakeRect(0.0f, yOffset, self.documentSize.width, rowHeight);
+			yOffset += rowHeight;
+			[aCell setNeedsLayout];
+			[aCell setNeedsDisplay];
+			[self addSubview:aCell];
+			[aCell layoutIfNeeded];
 		}
 	}
 	

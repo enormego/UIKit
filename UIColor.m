@@ -8,6 +8,10 @@
 
 #import "UIColor.h"
 
+@interface NSColor (UIColor)
+- (CGColorRef)CGColor;
+@end
+
 
 @implementation UIColor
 
@@ -139,7 +143,38 @@
 }
 
 - (CGColorRef)CGColor {
-	return NULL;
+	return [super CGColor];
+}
+
+
+@end
+
+@implementation NSColor (UIColor)
+
+- (CGColorRef)CGColor {
+	if([[self colorSpaceName] isEqualToString:NSDeviceCMYKColorSpace]) {
+		float components[5];
+		
+		[self getCyan:&components[0]
+			  magenta:&components[1]
+			   yellow:&components[2]
+				black:&components[3]
+				alpha:&components[4]
+		 ];
+		
+		return CGAutorelease(CGColorCreate([[self colorSpace] CGColorSpace], components));
+	} else {
+		NSColor* deviceColor = [self colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+		
+		float components[4];
+		
+		[deviceColor getRed:&components[0]
+					  green:&components[1]
+					   blue:&components[2]
+					  alpha:&components[3]];
+		
+		return CGAutorelease(CGColorCreate([[deviceColor colorSpace] CGColorSpace], components));
+	}
 }
 
 @end

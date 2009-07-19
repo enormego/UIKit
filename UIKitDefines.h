@@ -14,3 +14,5 @@
 
 #define UIKIT_STATIC_INLINE	static inline
 #define	UIKIT_EXTERN_CLASS	__attribute__((visibility("default")))
+
+#define CGAutorelease(x) (__typeof(x))[NSMakeCollectable(x) autorelease]

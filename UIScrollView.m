@@ -25,6 +25,9 @@
 		self.autohidesScrollers = YES;
 		self.documentView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
 		self.documentView.backgroundColor = [UIColor whiteColor];
+		
+		self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		self.documentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	}
 	
 	return self;

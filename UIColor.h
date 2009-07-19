@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <UIKit/UIImage.h>
+#import <UIKit/UIKitDefines.h>
 
 @interface UIColor : NSColor {
 

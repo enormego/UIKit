@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <UIKit/UIView.h>
 #import <UIKit/UIColor.h>
+#import <UIKit/UIFont.h>
 
 @interface UILabel : UIView {
 @private

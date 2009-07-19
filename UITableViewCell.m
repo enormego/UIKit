@@ -7,7 +7,8 @@
 //
 
 #import "UITableViewCell.h"
-
+#import "UITableViewCell-Private.h"
+#import "UILabel.h"
 
 @implementation UITableViewCell
 @synthesize imageView=_imageView, textLabel=_textLabel, detailTextLabel=_detailTextLabel;
@@ -29,13 +30,35 @@
 
 - (id)initWithFrame:(NSRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
 	if((self = [super initWithFrame:frame])) {
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_reuseIdentifier = [reuseIdentifier copy];
 		_selectionStyle = UITableViewCellSelectionStyleBlue;
 		
-		_contentView = [[UIView alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, frame.size.width, frame.size.height)];
+		_contentView = [[UIView alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, frame.size.width, frame.size.height-1.0f)];
+		_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+		_textLabel = [[UILabel alloc] initWithFrame:_contentView.bounds];
+		_textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_textLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+		_textLabel.backgroundColor = [UIColor whiteColor];
+		_textLabel.textColor = [UIColor blackColor];
+		
+		[_contentView addSubview:_textLabel];
+
+		_separatorView = [[UIView alloc] initWithFrame:NSMakeRect(0.0f, frame.size.height-1.0f, frame.size.width, 1.0f)];
+		_separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+		_separatorView.backgroundColor = self.separatorColor;
+
+		[self addSubview:_contentView];
+		[self addSubview:_separatorView];
 	}
 	
 	return self;
+}
+
+- (void)layoutSubviews {
+	[super layoutSubviews];
+	_contentView.backgroundColor = self.backgroundColor;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -54,7 +77,18 @@
 	
 }
 
+- (UIColor*)separatorColor {
+	return _separatorColor;
+}
+
+- (void)setSeparatorColor:(UIColor*)aColor {
+	[_separatorColor release];
+	_separatorColor = [aColor retain];
+	_separatorView.backgroundColor = _separatorColor;
+}
+
 - (void)dealloc {
+	[_separatorColor release];
 	[_contentView release];
 	[super dealloc];
 }
