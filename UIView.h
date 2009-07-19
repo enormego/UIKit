@@ -9,11 +9,13 @@
 #import <Cocoa/Cocoa.h>
 #import <UIKit/UIKitDefines.h>
 
-
+@class UIColor;
 @interface UIView : NSView {
-
+@private
+	UIColor* _backgroundColor;
 }
 
 - (void)setNeedsDisplay;
 
+@property(nonatomic,retain) UIColor* backgroundColor;
 @end

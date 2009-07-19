@@ -7,16 +7,22 @@
 //
 
 #import "UIView.h"
-
+#import "UIColor.h"
 
 @implementation UIView
+@synthesize backgroundColor=_backgroundColor;
 
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
-		
+		self.backgroundColor = [UIColor blackColor];
 	}
 	
 	return self;
+}
+
+- (void)drawRect:(NSRect)rect {
+	[self.backgroundColor setFill];
+	NSRectFill(rect);
 }
 
 - (void)setNeedsDisplay {
@@ -25,6 +31,11 @@
 
 - (BOOL)isFlipped {
 	return YES;
+}
+
+- (void)dealloc {
+	self.backgroundColor = nil;
+	[super dealloc];
 }
 
 @end

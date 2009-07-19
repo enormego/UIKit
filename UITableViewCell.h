@@ -71,7 +71,6 @@ UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView {
     UIView      *_backgroundView;
     UIView      *_selectedBackgroundView;
     UIView      *_selectedOverlayView;
-    UIColor     *_backgroundColor;
     UIColor     *_separatorColor;
     UIView      *_floatingSeparatorView;
     CFMutableDictionaryRef _unhighlightedStates;

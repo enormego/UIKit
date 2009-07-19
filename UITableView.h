@@ -94,8 +94,8 @@ UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView {
     NSMutableArray             *_deleteItems;
     NSMutableArray             *_reloadItems;
     
-    NSColor                    *_separatorColor;
-    NSColor                    *_checkmarkColor;
+    UIColor                    *_separatorColor;
+    UIColor                    *_checkmarkColor;
     
     NSArray                    *_defaultSectionIndexTitles;
 	
@@ -245,7 +245,7 @@ UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView {
 // Appearance
 
 @property(nonatomic) UITableViewCellSeparatorStyle separatorStyle;              // default is UITableViewCellSeparatorStyleSingleLine
-@property(nonatomic,retain) NSColor* separatorColor;							// default is the standard separator gray
+@property(nonatomic,retain) UIColor* separatorColor;							// default is the standard separator gray
 
 @property(nonatomic,retain) UIView* tableHeaderView;                            // accessory view for above row content. default is nil. not to be confused with section header
 @property(nonatomic,retain) UIView* tableFooterView;                            // accessory view below content. default is nil. not to be confused with section footer

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UITableView.h>
+#import "UIColor.h"
 
 
 @implementation UITableView
@@ -18,22 +19,47 @@
 
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
+		NSLog(@"initWithFrame");
 		_rowHeight = 44.0f;
 		_sectionHeaderHeight = 22.0f;
 		_sectionFooterHeight = 22.0f;
 		_allowsSelection = YES;
 		_allowsSelectionDuringEditing = NO;
 		_separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-		_separatorColor = [[NSColor grayColor] retain];
+		_separatorColor = [[UIColor grayColor] retain];
 		_reusableTableCells = [[NSMutableDictionary alloc] init];
+
+		self.hasVerticalScroller = YES;
+		self.hasHorizontalScroller = NO;
+		self.autohidesScrollers = NO;
 	}
 	
 	return self;
 }
 
 #pragma mark Todo
+
 - (void)reloadData {
+	float height = 0.0f;
+	NSInteger sections = 1;
+	BOOL variableRowHeights = [self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)];
 	
+	if([self.dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
+		sections = [self.dataSource numberOfSectionsInTableView:self];
+	}
+	
+	for(int section = 0; section < sections; section++) {
+		NSInteger rows = [self.dataSource tableView:self numberOfRowsInSection:section];
+		if(variableRowHeights) {
+			for(int row = 0; row < rows; row++) {
+				height += [self.delegate tableView:self heightForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+			}
+		} else {
+			height += rows * self.rowHeight;
+		}
+	}
+	
+	self.documentSize = NSMakeSize([self contentSize].width, height);
 }
 
 - (NSInteger)numberOfSections {
@@ -99,6 +125,23 @@
 - (void)dealloc {
 	[_reusableTableCells release];
 	[super dealloc];
+}
+
+@end
+
+@implementation NSIndexPath (UITableView)
+
++ (NSIndexPath *)indexPathForRow:(NSUInteger)row inSection:(NSUInteger)section {
+	NSUInteger indexArr[] = {row,section};
+	return [NSIndexPath indexPathWithIndexes:indexArr length:2];
+}
+
+- (NSUInteger)section {
+	return [self indexAtPosition:1];
+}
+
+- (NSUInteger)row {
+	return [self indexAtPosition:0];
 }
 
 @end
