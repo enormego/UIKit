@@ -11,4 +11,16 @@
 
 @implementation UIView
 
+- (id)initWithFrame:(NSRect)frameRect {
+	if((self = [super initWithFrame:frameRect])) {
+		
+	}
+	
+	return self;
+}
+
+- (BOOL)isFlipped {
+	return YES;
+}
+
 @end

@@ -8,9 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 #import <UIKit/UIKitDefines.h>
+#import <UIKit/UIView.h>
 
-
-@interface UIScrollView : NSScrollView {
+@interface UIScrollView : UIView {
 
 }
 

@@ -8,15 +8,22 @@
 
 #import "UIScrollView.h"
 
-
 @implementation UIScrollView
 
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
-		self.autohidesScrollers = YES;
+
 	}
 	
 	return self;
+}
+
+- (BOOL)isFlipped {
+	return YES;
+}
+
+- (void)dealloc {
+	[super dealloc];
 }
 
 @end

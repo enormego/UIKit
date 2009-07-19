@@ -52,7 +52,7 @@ typedef NSUInteger UITableViewCellStateMask;        // available in iPhone 3.0
 
 #define UITableViewCellStateEditingMask UITableViewCellStateShowingEditControlMask
 
-UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView <NSCoding> {
+UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView {
 @private
     id           _layoutManager;
     id           _target;
@@ -76,16 +76,10 @@ UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView <NSCoding> {
     UIView      *_floatingSeparatorView;
     CFMutableDictionaryRef _unhighlightedStates;
     struct {
-        unsigned int showingDeleteConfirmation:1;
         unsigned int separatorStyle:3;
-        unsigned int selectionStyle:3;
         unsigned int selectionFadeFraction:11;	// used to indicate selection
-        unsigned int editing:1;
         unsigned int editingStyle:3;
-        unsigned int accessoryType:3;
-        unsigned int editingAccessoryType:3;
         unsigned int showsAccessoryWhenEditing:1;
-        unsigned int showsReorderControl:1;
         unsigned int showDisclosure:1;
         unsigned int showTopSeparator:1;
 		
@@ -94,7 +88,6 @@ UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView <NSCoding> {
         unsigned int showingRemoveControl:1;
         unsigned int sectionLocation:3;
         unsigned int tableViewStyle:1;
-        unsigned int shouldIndentWhileEditing:1;
         unsigned int fontSet:1;
         unsigned int usingDefaultSelectedBackgroundView:1;
         unsigned int wasSwiped:1;
@@ -105,8 +98,8 @@ UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView <NSCoding> {
         unsigned int style:12;
     } _tableCellFlags;
     
-    UIButton *_accessoryView;
-    UIButton *_editingAccessoryView;
+    UIView *_accessoryView;
+    UIView *_editingAccessoryView;
     UIView *_customAccessoryView;
     UIView *_customEditingAccessoryView;
     UIView *_separatorView;
@@ -116,10 +109,20 @@ UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView <NSCoding> {
     NSTimer *_deselectTimer;
     CGFloat _textFieldOffset;
     SEL _returnAction;
+	UITableViewCellSelectionStyle  _selectionStyle;
+	BOOL _isSelected;
+	BOOL _isHighlighted;
+	UITableViewCellEditingStyle _editingStyle;
+	BOOL _showsReorderControl;
+	BOOL _shouldIndentWhileEditing;
+	BOOL _editing;
+	BOOL _showingDeleteConfirmation;
+	UITableViewCellAccessoryType   _accessoryType;
+	UITableViewCellAccessoryType   _editingAccessoryType;
 }
 
 // Designated initializer.  If the cell can be reused, you must pass in a reuse identifier.  You should use the same reuse identifier for all cells of the same form.  
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
 // Content.  These properties provide direct access to the internal label and image views used by the table view cell.  These should be used instead of the content properties below.
 @property(nonatomic,readonly,retain) UIImageView  *imageView __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);   // default is nil.  image view will be created if necessary.
@@ -162,18 +165,12 @@ UIKIT_EXTERN_CLASS @interface UITableViewCell : UIView <NSCoding> {
 
 @property(nonatomic,readonly) BOOL                  showingDeleteConfirmation;  // currently showing "Delete" button
 
-// These methods can be used by subclasses to animate additional changes to the cell when the cell is changing state
-// Note that when the cell is swiped, the cell will be transitioned into the UITableViewCellStateShowingDeleteConfirmationMask state,
-// but the UITableViewCellStateShowingEditControlMask will not be set.
-- (void)willTransitionToState:(UITableViewCellStateMask)state __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);
-- (void)didTransitionToState:(UITableViewCellStateMask)state __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_3_0);
-
 @end
 
 @interface UITableViewCell (UIDeprecated)
 
 // Frame is ignored.  The size will be specified by the table view width and row height.
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_NA,__MAC_NA,__IPHONE_2_0,__IPHONE_3_0);
+- (id)initWithFrame:(NSRect)frame reuseIdentifier:(NSString *)reuseIdentifier;
 
 // Content properties.  These properties were deprecated in iPhone OS 3.0.  The textLabel and imageView properties above should be used instead.
 // For selected attributes, set the highlighted attributes on the textLabel and imageView.
