@@ -8,6 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define UIFont NSFont
+
 #import <UIKit/UIView.h>
+#import <UIKit/UIColor.h>
+#import <UIKit/UIImage.h>
+#import <UIKit/UILabel.h>
 #import <UIKit/UITableView.h>
 #import <UIKit/UITableViewCell.h>

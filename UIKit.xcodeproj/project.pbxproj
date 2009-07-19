@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28092F91101378D600AE0F9A /* UILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 28092F8F101378D600AE0F9A /* UILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		28092F92101378D600AE0F9A /* UILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28092F90101378D600AE0F9A /* UILabel.m */; };
+		28092FA01013793B00AE0F9A /* UIColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 28092F9E1013793B00AE0F9A /* UIColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		28092FA11013793B00AE0F9A /* UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 28092F9F1013793B00AE0F9A /* UIColor.m */; };
+		28092FC810137B6B00AE0F9A /* UIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 28092FC610137B6B00AE0F9A /* UIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		28092FC910137B6B00AE0F9A /* UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 28092FC710137B6B00AE0F9A /* UIImage.m */; };
 		284CBB3C0FAA51AA007DBD91 /* UIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 284CBB3A0FAA51AA007DBD91 /* UIView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		284CBB3D0FAA51AA007DBD91 /* UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 284CBB3B0FAA51AA007DBD91 /* UIView.m */; };
 		284CBB420FAA51B4007DBD91 /* UITableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 284CBB400FAA51B4007DBD91 /* UITableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -27,6 +33,12 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		28092F8F101378D600AE0F9A /* UILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILabel.h; sourceTree = "<group>"; };
+		28092F90101378D600AE0F9A /* UILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILabel.m; sourceTree = "<group>"; };
+		28092F9E1013793B00AE0F9A /* UIColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColor.h; sourceTree = "<group>"; };
+		28092F9F1013793B00AE0F9A /* UIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColor.m; sourceTree = "<group>"; };
+		28092FC610137B6B00AE0F9A /* UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImage.h; sourceTree = "<group>"; };
+		28092FC710137B6B00AE0F9A /* UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImage.m; sourceTree = "<group>"; };
 		284CBB3A0FAA51AA007DBD91 /* UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIView.h; sourceTree = "<group>"; };
 		284CBB3B0FAA51AA007DBD91 /* UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIView.m; sourceTree = "<group>"; };
 		284CBB400FAA51B4007DBD91 /* UITableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableView.h; sourceTree = "<group>"; };
@@ -101,6 +113,12 @@
 				284CBB4D0FAA5201007DBD91 /* UIKit.h */,
 				284CBB3A0FAA51AA007DBD91 /* UIView.h */,
 				284CBB3B0FAA51AA007DBD91 /* UIView.m */,
+				28092F8F101378D600AE0F9A /* UILabel.h */,
+				28092F90101378D600AE0F9A /* UILabel.m */,
+				28092F9E1013793B00AE0F9A /* UIColor.h */,
+				28092F9F1013793B00AE0F9A /* UIColor.m */,
+				28092FC610137B6B00AE0F9A /* UIImage.h */,
+				28092FC710137B6B00AE0F9A /* UIImage.m */,
 				284CBB400FAA51B4007DBD91 /* UITableView.h */,
 				284CBB410FAA51B4007DBD91 /* UITableView.m */,
 				284CBB480FAA51DF007DBD91 /* UITableViewCell.h */,
@@ -152,6 +170,9 @@
 				284CBB4F0FAA5201007DBD91 /* UIKit.h in Headers */,
 				284CBB890FAA52D3007DBD91 /* UIScrollView.h in Headers */,
 				284CBB9F0FAA53D7007DBD91 /* UIKitDefines.h in Headers */,
+				28092F91101378D600AE0F9A /* UILabel.h in Headers */,
+				28092FA01013793B00AE0F9A /* UIColor.h in Headers */,
+				28092FC810137B6B00AE0F9A /* UIImage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +236,9 @@
 				284CBB430FAA51B4007DBD91 /* UITableView.m in Sources */,
 				284CBB4B0FAA51DF007DBD91 /* UITableViewCell.m in Sources */,
 				284CBB8A0FAA52D3007DBD91 /* UIScrollView.m in Sources */,
+				28092F92101378D600AE0F9A /* UILabel.m in Sources */,
+				28092FA11013793B00AE0F9A /* UIColor.m in Sources */,
+				28092FC910137B6B00AE0F9A /* UIImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

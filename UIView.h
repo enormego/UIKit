@@ -14,4 +14,6 @@
 
 }
 
+- (void)setNeedsDisplay;
+
 @end

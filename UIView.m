@@ -19,6 +19,10 @@
 	return self;
 }
 
+- (void)setNeedsDisplay {
+	[super setNeedsDisplay:YES];
+}
+
 - (BOOL)isFlipped {
 	return YES;
 }
