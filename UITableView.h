@@ -53,7 +53,6 @@ UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView {
 	
 	UITableViewCellSeparatorStyle _separatorStyle;
 	
-    NSRange                     _visibleRows;
     NSMutableArray             *_visibleCells;
     NSIndexPath                *_firstResponderIndexPath;
     UITableViewCell            *_firstResponderCell;
