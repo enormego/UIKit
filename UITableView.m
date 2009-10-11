@@ -29,24 +29,36 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 @synthesize separatorStyle=_separatorStyle, separatorColor=_separatorColor;
 @synthesize tableHeaderView=_tableHeaderView, tableFooterView=_tableFooterView;
 
+- (void)setupTableViewDefaults {
+	_rowHeight = 44.0f;
+	_sectionHeaderHeight = 22.0f;
+	_sectionFooterHeight = 22.0f;
+	_allowsSelection = YES;
+	_allowsSelectionDuringEditing = NO;
+	_separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_separatorColor = [[UIColor grayColor] retain];
+	_reusableTableCells = [[NSMutableDictionary alloc] init];
+	_visibleCells = [[NSMutableArray alloc] init];
+	_sectionData = [[NSMutableArray alloc] init];
+	
+	self.hasVerticalScroller = YES;
+	self.hasHorizontalScroller = NO;
+	self.autohidesScrollers = NO;
+	
+	((UIView*)self.documentView).autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+}
+
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
-		_rowHeight = 44.0f;
-		_sectionHeaderHeight = 22.0f;
-		_sectionFooterHeight = 22.0f;
-		_allowsSelection = YES;
-		_allowsSelectionDuringEditing = NO;
-		_separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-		_separatorColor = [[UIColor grayColor] retain];
-		_reusableTableCells = [[NSMutableDictionary alloc] init];
-		_visibleCells = [[NSMutableArray alloc] init];
-		_sectionData = [[NSMutableArray alloc] init];
+		[self setupTableViewDefaults];
+	}
+	
+	return self;
+}
 
-		self.hasVerticalScroller = YES;
-		self.hasHorizontalScroller = NO;
-		self.autohidesScrollers = NO;
-		
-		((UIView*)self.documentView).autoresizingMask = UIViewAutoresizingFlexibleWidth;
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	if((self = [super initWithCoder:aDecoder])) {
+		[self setupTableViewDefaults];
 	}
 	
 	return self;
@@ -94,10 +106,10 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 	}
 	
 
+	self.documentSize = NSMakeSize([self contentSize].width, height);
+
 	[self removeInvisibleCells];
 	[self layoutVisibleCells];
-	
-	self.documentSize = NSMakeSize([self contentSize].width, height);
 }
 
 - (NSInteger)numberOfSections {
@@ -214,9 +226,31 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 
 - (void)reflectScrolledClipView:(NSClipView *)aClipView{
 	[super reflectScrolledClipView:aClipView];
-
 	[self removeInvisibleCells];
 	[self layoutVisibleCells];
+}
+
+#pragma mark -
+#pragma mark Live resizing methods
+- (void)viewWillStartLiveResize {
+	[super viewWillStartLiveResize];
+	liveResizeScrollOffset = self.documentOffset;
+}
+
+- (void)viewDidEndLiveResize {
+	[super viewDidEndLiveResize];
+	[self removeInvisibleCells];
+	[self layoutVisibleCells];
+}
+
+- (void)setFrame:(NSRect)frameRect {
+	[super setFrame:frameRect];
+	
+	if([self inLiveResize]) {
+		self.documentOffset = liveResizeScrollOffset;
+		[self removeInvisibleCells];
+		[self layoutVisibleCells];
+	}
 }
 
 #pragma mark Todo

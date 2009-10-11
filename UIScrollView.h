@@ -15,6 +15,8 @@
 	UIColor* _backgroundColor;
 }
 
+- (void)superSetBackgroundColor:(NSColor*)aColor;
+
 /*
  IMPORTANT:
  -----------------------------------------------------------------------------

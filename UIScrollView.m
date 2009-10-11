@@ -10,6 +10,8 @@
 #import "UIClipView.h"
 #import "UIColor.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @interface UIScrollView (Private)
 @property(nonatomic,retain) UIView* documentView;
 @end
@@ -18,18 +20,30 @@
 @implementation UIScrollView
 @synthesize backgroundColor=_backgroundColor;
 
+- (void)setupScrollViewDefaults {
+	self.layer = [CALayer layer];
+	
+	self.contentView = [[[UIClipView alloc] initWithFrame:self.bounds] autorelease];
+	self.contentView.wantsLayer = YES;
+	self.hasVerticalScroller = YES;
+	self.hasHorizontalScroller = YES;
+	self.autohidesScrollers = YES;
+	self.documentView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+	
+	self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;	
+}
+
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
-		self.wantsLayer = YES;
+		[self setupScrollViewDefaults];
+	}
+	
+	return self;
+}
 
-		self.contentView = [[[UIClipView alloc] initWithFrame:self.bounds] autorelease];
-		self.contentView.wantsLayer = YES;
-		self.hasVerticalScroller = YES;
-		self.hasHorizontalScroller = YES;
-		self.autohidesScrollers = YES;
-		self.documentView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-		
-		self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	if((self = [super initWithCoder:aDecoder])) {
+		[self setupScrollViewDefaults];
 	}
 	
 	return self;
@@ -73,6 +87,11 @@
 	
 	self.documentView.backgroundColor = aColor;
 	self.contentView.backgroundColor = aColor.NSColor;
+	[super setBackgroundColor:aColor.NSColor];
+}
+
+- (void)superSetBackgroundColor:(NSColor*)aColor {
+	[super setBackgroundColor:aColor];
 }
 
 - (void)dealloc {

@@ -15,8 +15,7 @@
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
 		_textField = [[UITextField alloc] initWithFrame:self.bounds];
-		_textField.backgroundColor = self.backgroundColor.NSColor;
-		_textField.textColor = self.textColor.NSColor;
+		_textField.textColor = self.textColor;
 		_textField.font = self.font;
 		[_textField setEditable:NO];
 		[_textField setSelectable:NO];
@@ -47,7 +46,6 @@
 
 - (void)setBackgroundColor:(UIColor *)aColor {
 	[super setBackgroundColor:aColor];
-	_textField.backgroundColor = self.backgroundColor.NSColor;
 }
 
 - (void)setFont:(NSFont*)aFont {
@@ -68,7 +66,7 @@
 	[textColor release];
 	textColor = [aColor retain];
 	
-	_textField.textColor = self.textColor.NSColor;
+	_textField.textColor = self.textColor;
 }
 
 - (UIColor*)textColor {

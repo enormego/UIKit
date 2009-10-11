@@ -32,6 +32,6 @@
 @property(nonatomic,retain) UIColor* shadowColor;
 @property(nonatomic,assign) NSSize shadowOffset;
 
-// Only on UIKit-Mac.  Apple's iPhone libary does not have this.
+// Only on UIKit-Mac.  Apple's iPhone framework does not have this.
 @property(nonatomic,assign,getter=isSelectable) BOOL selectable;
 @end

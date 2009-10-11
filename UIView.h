@@ -19,7 +19,7 @@ enum {
     UIViewAutoresizingFlexibleBottomMargin	= 32
 };
 
-@class UIColor;
+@class UIColor, CALayer;
 @interface UIView : NSView {
 @private
 	UIColor* _backgroundColor;
@@ -35,4 +35,8 @@ enum {
 - (void)layoutSubviews;
 
 @property(nonatomic,retain) UIColor* backgroundColor;
+@end
+
+@interface NSView (UIViewLayerBacking)
+@property(nonatomic,retain) CALayer* layer;
 @end
