@@ -32,4 +32,11 @@
 	return YES;
 }
 
+- (NSString*)description {
+	NSString* description = [super description];
+	description = [description substringToIndex:description.length - 1];
+	description = [description stringByAppendingFormat:@"; %@>", NSStringFromRect(self.frame)];
+	return description;
+}
+
 @end

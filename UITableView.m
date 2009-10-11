@@ -78,9 +78,9 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 	[_sectionData removeAllObjects];
 	
 	for(int section = 0; section < sections; section++) {
-		float offsetY = self.rowHeight;
 		NSInteger rows = [self.dataSource tableView:self numberOfRowsInSection:section];
 		NSMutableArray* rowInfo = [[NSMutableArray alloc] initWithCapacity:rows];
+		float offsetY = height;
 
 		for(int row = 0; row < rows; row++) {
 			float rowHeight = self.rowHeight;
@@ -106,9 +106,10 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 	}
 	
 
+	if(height == 0) height = 1.0f;
 	self.documentSize = NSMakeSize([self contentSize].width, height);
 
-	[self removeInvisibleCells];
+	[self clearAllCells];
 	[self layoutVisibleCells];
 }
 
@@ -199,11 +200,18 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 - (void)clearAllCells {
 	[_visibleCells removeAllObjects];
 	
+	NSMutableSet* cells = [[NSMutableSet alloc] init];
 	for(UITableViewCell* cell in [self.documentView subviews]) {
 		if(![cell isKindOfClass:[UITableViewCell class]]) continue;
+		[cells addObject:cell];
+	}
+	
+	for(UITableViewCell* cell in cells) {
 		[self queueReusableCell:cell];
 		[cell removeFromSuperview];
 	}
+
+	[cells release];
 }
 
 - (void)removeInvisibleCells {
@@ -300,6 +308,8 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 	if(!aTableViewCell) return;
 	if(!aTableViewCell.reuseIdentifier) return;
 	
+	if([[_reusableTableCells objectForKey:aTableViewCell.reuseIdentifier] containsObject:aTableViewCell]) return;
+
 	[aTableViewCell prepareForReuse];
 	
 	if(![_reusableTableCells objectForKey:aTableViewCell.reuseIdentifier]) {
