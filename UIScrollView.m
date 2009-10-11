@@ -16,18 +16,20 @@
 
 
 @implementation UIScrollView
+@synthesize backgroundColor=_backgroundColor;
 
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
+		self.wantsLayer = YES;
+
 		self.contentView = [[[UIClipView alloc] initWithFrame:self.bounds] autorelease];
+		self.contentView.wantsLayer = YES;
 		self.hasVerticalScroller = YES;
 		self.hasHorizontalScroller = YES;
 		self.autohidesScrollers = YES;
 		self.documentView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-		self.documentView.backgroundColor = [UIColor whiteColor];
 		
 		self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		self.documentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	}
 	
 	return self;
@@ -65,7 +67,16 @@
 	return YES;
 }
 
+- (void)setBackgroundColor:(UIColor *)aColor {
+	[_backgroundColor release];
+	_backgroundColor = [aColor retain];
+	
+	self.documentView.backgroundColor = aColor;
+	self.contentView.backgroundColor = aColor.NSColor;
+}
+
 - (void)dealloc {
+	[_backgroundColor release];
 	[super dealloc];
 }
 

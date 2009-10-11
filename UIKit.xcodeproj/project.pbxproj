@@ -13,11 +13,13 @@
 		28092FA11013793B00AE0F9A /* UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 28092F9F1013793B00AE0F9A /* UIColor.m */; };
 		28092FC810137B6B00AE0F9A /* UIImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 28092FC610137B6B00AE0F9A /* UIImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		28092FC910137B6B00AE0F9A /* UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 28092FC710137B6B00AE0F9A /* UIImage.m */; };
-		280930211013854900AE0F9A /* UIClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2809301F1013854900AE0F9A /* UIClipView.h */; };
+		280930211013854900AE0F9A /* UIClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2809301F1013854900AE0F9A /* UIClipView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		280930221013854900AE0F9A /* UIClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 280930201013854900AE0F9A /* UIClipView.m */; };
-		280932EE10139A5700AE0F9A /* UITableViewCell-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 280932EC10139A5700AE0F9A /* UITableViewCell-Private.h */; };
+		280932EE10139A5700AE0F9A /* UITableViewCell-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 280932EC10139A5700AE0F9A /* UITableViewCell-Private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		280934411013A99F00AE0F9A /* UIFont.h in Headers */ = {isa = PBXBuildFile; fileRef = 2809343F1013A99F00AE0F9A /* UIFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		280934421013A99F00AE0F9A /* UIFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 280934401013A99F00AE0F9A /* UIFont.m */; };
+		28093688101560AF00AE0F9A /* UITextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 28093686101560AF00AE0F9A /* UITextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		28093689101560AF00AE0F9A /* UITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 28093687101560AF00AE0F9A /* UITextField.m */; };
 		284CBB3C0FAA51AA007DBD91 /* UIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 284CBB3A0FAA51AA007DBD91 /* UIView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		284CBB3D0FAA51AA007DBD91 /* UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 284CBB3B0FAA51AA007DBD91 /* UIView.m */; };
 		284CBB420FAA51B4007DBD91 /* UITableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 284CBB400FAA51B4007DBD91 /* UITableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,6 +51,8 @@
 		280932EC10139A5700AE0F9A /* UITableViewCell-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell-Private.h"; sourceTree = "<group>"; };
 		2809343F1013A99F00AE0F9A /* UIFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFont.h; sourceTree = "<group>"; };
 		280934401013A99F00AE0F9A /* UIFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFont.m; sourceTree = "<group>"; };
+		28093686101560AF00AE0F9A /* UITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextField.h; sourceTree = "<group>"; };
+		28093687101560AF00AE0F9A /* UITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextField.m; sourceTree = "<group>"; };
 		284CBB3A0FAA51AA007DBD91 /* UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIView.h; sourceTree = "<group>"; };
 		284CBB3B0FAA51AA007DBD91 /* UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIView.m; sourceTree = "<group>"; };
 		284CBB400FAA51B4007DBD91 /* UITableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableView.h; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 				284CBB880FAA52D3007DBD91 /* UIScrollView.m */,
 				2809301F1013854900AE0F9A /* UIClipView.h */,
 				280930201013854900AE0F9A /* UIClipView.m */,
+				28093686101560AF00AE0F9A /* UITextField.h */,
+				28093687101560AF00AE0F9A /* UITextField.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -191,6 +197,7 @@
 				280930211013854900AE0F9A /* UIClipView.h in Headers */,
 				280932EE10139A5700AE0F9A /* UITableViewCell-Private.h in Headers */,
 				280934411013A99F00AE0F9A /* UIFont.h in Headers */,
+				28093688101560AF00AE0F9A /* UITextField.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +266,7 @@
 				28092FC910137B6B00AE0F9A /* UIImage.m in Sources */,
 				280930221013854900AE0F9A /* UIClipView.m in Sources */,
 				280934421013A99F00AE0F9A /* UIFont.m in Sources */,
+				28093689101560AF00AE0F9A /* UITextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,7 +326,7 @@
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -332,7 +340,7 @@
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

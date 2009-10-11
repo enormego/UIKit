@@ -10,8 +10,9 @@
 #import <UIKit/UIImage.h>
 #import <UIKit/UIKitDefines.h>
 
-@interface UIColor : NSColor {
-
+@interface UIColor : NSObject {
+@private
+	CGColorRef CGColor; 
 }
 
 // Convenience methods for creating autoreleased colors
@@ -58,5 +59,8 @@
 
 // Access the underlying CGColor
 @property(nonatomic,readonly) CGColorRef CGColor;
+
+// Converst to NSColor
+@property(nonatomic,readonly) NSColor* NSColor;
 
 @end

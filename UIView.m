@@ -14,17 +14,20 @@
 @implementation UIView
 @synthesize backgroundColor=_backgroundColor;
 
-- (id)initWithFrame:(NSRect)frameRect {
-	if((self = [super initWithFrame:frameRect])) {
-		[self setWantsLayer:YES];
-		self.backgroundColor = [UIColor blackColor];
+- (id)initWithFrame:(CGRect)frame {
+	if((self = [super initWithFrame:(NSRect)frame])) {
+		[self setLayer:[CALayer layer]];
 	}
 	
 	return self;
 }
 
-- (void)drawRect:(NSRect)rect {
-
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	if((self = [super initWithCoder:aDecoder])) {
+		[self setLayer:[CALayer layer]];
+	}
+	
+	return self;
 }
 
 - (void)setNeedsDisplay {
@@ -43,7 +46,13 @@
 - (void)setBackgroundColor:(UIColor *)aColor {
 	[_backgroundColor release];
 	_backgroundColor = [aColor retain];
+	
 	self.layer.backgroundColor = self.backgroundColor.CGColor;
+}
+
+- (void)viewDidMoveToSuperview {
+	[super viewDidMoveToSuperview];
+
 }
 
 - (void)setNeedsLayout {

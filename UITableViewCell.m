@@ -10,6 +10,8 @@
 #import "UITableViewCell-Private.h"
 #import "UILabel.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @implementation UITableViewCell
 @synthesize imageView=_imageView, textLabel=_textLabel, detailTextLabel=_detailTextLabel;
 @synthesize contentView=_contentView, backgroundView=_backgroundView, selectedBackgroundView=_selectedBackgroundView;
@@ -21,7 +23,7 @@
 @synthesize indentationWidth=_indentationWidth, editing=_editing, showingDeleteConfirmation=_showingDeleteConfirmation;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-	if(self = [self initWithFrame:NSMakeRect(0.0f, 0.0f, 500.0f, 44.0f) reuseIdentifier:reuseIdentifier]) {
+	if(self = [self initWithFrame:NSMakeRect(0.0f, 0.0f, 320.0f, 44.0f) reuseIdentifier:reuseIdentifier]) {
 		
 	}
 	
@@ -31,34 +33,44 @@
 - (id)initWithFrame:(NSRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
 	if((self = [super initWithFrame:frame])) {
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		self.backgroundColor = [UIColor whiteColor];
 		_reuseIdentifier = [reuseIdentifier copy];
 		_selectionStyle = UITableViewCellSelectionStyleBlue;
 		
 		_contentView = [[UIView alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, frame.size.width, frame.size.height-1.0f)];
 		_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-		_textLabel = [[UILabel alloc] initWithFrame:_contentView.bounds];
-		_textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_textLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-		_textLabel.backgroundColor = [UIColor whiteColor];
-		_textLabel.textColor = [UIColor blackColor];
 		
-		[_contentView addSubview:_textLabel];
+		self.separatorColor = [UIColor blackColor];
 
-		_separatorView = [[UIView alloc] initWithFrame:NSMakeRect(0.0f, frame.size.height-1.0f, frame.size.width, 1.0f)];
-		_separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-		_separatorView.backgroundColor = self.separatorColor;
+		_separatorView = [[UIView alloc] initWithFrame:NSMakeRect(0.0f, 10.0f, frame.size.width, 10.0f)];
+		_separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
+		//[_contentView addSubview:_separatorView];
+		
 		[self addSubview:_contentView];
-		[self addSubview:_separatorView];
+		//[self addSubview:_separatorView];
+		
+		_separatorView.backgroundColor = [UIColor blackColor];
 	}
 	
 	return self;
 }
 
-- (void)layoutSubviews {
-	[super layoutSubviews];
-	_contentView.backgroundColor = self.backgroundColor;
+- (UILabel*)textLabel {
+	@synchronized(self) {
+		if(!_textLabel) {
+			_textLabel = [[UILabel alloc] initWithFrame:_contentView.bounds];
+			_textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			_textLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+			_textLabel.backgroundColor = self.backgroundColor;
+			_textLabel.textColor = [UIColor blackColor];
+			
+			[_contentView addSubview:_textLabel];
+		}
+	}
+	
+	return _textLabel;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -77,6 +89,13 @@
 	
 }
 
+- (NSString*)description {
+	NSString* description = [super description];
+	description = [description substringToIndex:description.length - 1];
+	description = [description stringByAppendingFormat:@"; %@>", NSStringFromRect(self.frame)];
+	return description;
+}
+
 - (UIColor*)separatorColor {
 	return _separatorColor;
 }
@@ -85,6 +104,10 @@
 	[_separatorColor release];
 	_separatorColor = [aColor retain];
 	_separatorView.backgroundColor = _separatorColor;
+}
+
+- (void)layoutSubviews {
+	[super layoutSubviews];
 }
 
 - (void)dealloc {

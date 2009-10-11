@@ -7,9 +7,26 @@
 //
 
 #import "UIClipView.h"
+#import "UIColor.h"
 
 
 @implementation UIClipView
+
+- (id)initWithFrame:(NSRect)frameRect {
+	if((self = [super initWithFrame:frameRect])) {
+		[self setWantsLayer:YES];
+	}
+	
+	return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	if((self = [super initWithCoder:aDecoder])) {
+		[self setWantsLayer:YES];
+	}
+	
+	return self;
+}
 
 - (BOOL)isFlipped {
 	return YES;

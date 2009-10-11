@@ -7,16 +7,33 @@
 //
 
 #import "UILabel.h"
+#import "UITextField.h"
 
 @implementation UILabel
 @synthesize text, font, highlightedTextColor, textColor, shadowColor, shadowOffset;
 
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
-
+		_textField = [[UITextField alloc] initWithFrame:self.bounds];
+		_textField.backgroundColor = self.backgroundColor.NSColor;
+		_textField.textColor = self.textColor.NSColor;
+		_textField.font = self.font;
+		[_textField setEditable:NO];
+		[_textField setSelectable:NO];
+		[_textField setBezeled:NO];
+		
+		[self addSubview:_textField];
     }
 	
     return self;
+}
+
+- (void)setSelectable:(BOOL)isSelectable {
+	[_textField setSelectable:isSelectable];
+}
+
+- (BOOL)isSelectable {
+	return [_textField isSelectable];
 }
 
 - (void)setText:(NSString*)newText {
@@ -24,26 +41,19 @@
 	
 	if(text) [text release];
 	text = [newText copy];
-	[self setNeedsDisplay];
+
+	[_textField setStringValue:text];
 }
 
-- (void)drawRect:(NSRect)rect {
-	if(!self.text) return;
-	
-	if(!isHighlighted && self.shadowColor) {
-		[self.shadowColor set];
-		NSRect offsetRect = rect;
-		offsetRect.origin = NSMakePoint(offsetRect.origin.x+self.shadowOffset.width, offsetRect.origin.y+self.shadowOffset.height);
-		[self.text drawInRect:offsetRect withAttributes:[NSDictionary dictionaryWithObject:self.font forKey:NSFontAttributeName]];
-	}
-	
-	if(isHighlighted) {
-		[self.highlightedTextColor set];
-	} else {
-		[self.textColor set];
-	}
+- (void)setBackgroundColor:(UIColor *)aColor {
+	[super setBackgroundColor:aColor];
+	_textField.backgroundColor = self.backgroundColor.NSColor;
+}
 
-	[self.text drawInRect:rect withAttributes:[NSDictionary dictionaryWithObject:self.font forKey:NSFontAttributeName]];
+- (void)setFont:(NSFont*)aFont {
+	[font release];
+	font = [aFont retain];
+	_textField.font = self.font;
 }
 
 - (NSFont*)font {
@@ -52,6 +62,13 @@
 	}
 	
 	return font;
+}
+
+- (void)setTextColor:(UIColor *)aColor {
+	[textColor release];
+	textColor = [aColor retain];
+	
+	_textField.textColor = self.textColor.NSColor;
 }
 
 - (UIColor*)textColor {
@@ -91,6 +108,7 @@
 	[textColor release];
 	[highlightedTextColor release];
 	[shadowColor release];
+	[_textField release];
 	[super dealloc];
 }
 

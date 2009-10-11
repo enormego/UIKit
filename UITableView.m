@@ -18,6 +18,7 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 - (void)queueReusableCell:(UITableViewCell*)aTableViewCell;
 - (void)layoutVisibleCells;
 - (void)removeInvisibleCells;
+- (void)clearAllCells;
 @end
 
 
@@ -30,7 +31,6 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 
 - (id)initWithFrame:(NSRect)frameRect {
 	if((self = [super initWithFrame:frameRect])) {
-		NSLog(@"initWithFrame");
 		_rowHeight = 44.0f;
 		_sectionHeaderHeight = 22.0f;
 		_sectionFooterHeight = 22.0f;
@@ -40,10 +40,13 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 		_separatorColor = [[UIColor grayColor] retain];
 		_reusableTableCells = [[NSMutableDictionary alloc] init];
 		_visibleCells = [[NSMutableArray alloc] init];
+		_sectionData = [[NSMutableArray alloc] init];
 
 		self.hasVerticalScroller = YES;
 		self.hasHorizontalScroller = NO;
 		self.autohidesScrollers = NO;
+		
+		((UIView*)self.documentView).autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	}
 	
 	return self;
@@ -60,17 +63,37 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 		sections = [self.dataSource numberOfSectionsInTableView:self];
 	}
 	
+	[_sectionData removeAllObjects];
+	
 	for(int section = 0; section < sections; section++) {
+		float offsetY = self.rowHeight;
 		NSInteger rows = [self.dataSource tableView:self numberOfRowsInSection:section];
-		if(variableRowHeights) {
-			for(int row = 0; row < rows; row++) {
-				height += [self.delegate tableView:self heightForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+		NSMutableArray* rowInfo = [[NSMutableArray alloc] initWithCapacity:rows];
+
+		for(int row = 0; row < rows; row++) {
+			float rowHeight = self.rowHeight;
+			
+			if(variableRowHeights) {
+				rowHeight = [self.delegate tableView:self heightForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
 			}
-		} else {
-			height += rows * self.rowHeight;
+			
+			NSRect rowRect = NSMakeRect(0.0f, height, self.contentView.frame.size.width, rowHeight);
+			[rowInfo addObject:[NSValue valueWithRect:rowRect]];
+			
+			height += rowHeight;
 		}
+		
+		NSMutableDictionary* sectionInfo = [[NSMutableDictionary alloc] initWithCapacity:2];
+		[sectionInfo setObject:rowInfo forKey:@"rows"];
+		[rowInfo release];
+		
+		NSRect sectionRect = NSMakeRect(0.0f, offsetY, self.contentView.frame.size.width, height-offsetY);
+		[sectionInfo setObject:[NSValue valueWithRect:sectionRect] forKey:@"rect"];
+		[_sectionData addObject:sectionInfo];
+		[sectionInfo release];
 	}
 	
+
 	[self removeInvisibleCells];
 	[self layoutVisibleCells];
 	
@@ -93,98 +116,96 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 	return [_dataSource tableView:self cellForRowAtIndexPath:indexPath];
 }
 
-#pragma mark Todo
 - (NSArray*)visibleCells {
 	return _visibleCells;
 }
 
 - (NSArray*)indexPathsForVisibleRows {
-	NSInteger sections = 1;
-	
-	if([self.dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
-		sections = [self.dataSource numberOfSectionsInTableView:self];
-	}
-
-	NSMutableArray* indexPaths = [NSMutableArray array];
-	BOOL variableRowHeights = [self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)];
-	float yOffset = 0.0f;
-	
-	CGRect clipViewBounds = NSRectToCGRect(self.contentView.bounds);
-	for(int section = 0; section < sections; section++) {
-		NSInteger rows = [self.dataSource tableView:self numberOfRowsInSection:section];
-		for(int row = 0; row < rows; row++) {
-			CGFloat rowHeight = self.rowHeight;
-			NSIndexPath* indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-			
-			if(variableRowHeights) {
-				rowHeight = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
-			}
-			
-			CGRect rowRect = CGRectFromOffsetHeight(yOffset, rowHeight);
-			if(CGRectIntersectsRect(clipViewBounds, rowRect)) {
-				[indexPaths addObject:indexPath];
-			}
-			
-			yOffset += rowHeight;
-		}
-	}
-	
-	return indexPaths;
+	// ToDo: indexPathsForVisibleRows
+	return nil;
 }
 
 - (void)layoutVisibleCells {
-	NSInteger sections = 1;
-	[_visibleCells removeAllObjects];
-	
-	if([self.dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
-		sections = [self.dataSource numberOfSectionsInTableView:self];
-	}
-	
-	BOOL variableRowHeights = [self.delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)];
-	float yOffset = 0.0f;
-	
 	CGRect clipViewBounds = NSRectToCGRect(self.contentView.bounds);
-	for(int section = 0; section < sections; section++) {
-		NSInteger rows = [self.dataSource tableView:self numberOfRowsInSection:section];
-		for(int row = 0; row < rows; row++) {
-			CGFloat rowHeight = self.rowHeight;
+	NSArray* subviews = [[[self.documentView subviews] copy] autorelease];
+	
+	NSInteger section = 0;
+	for(NSDictionary* sectionInfo in _sectionData) {
+		CGRect sectionRect = NSRectToCGRect([[sectionInfo objectForKey:@"rect"] rectValue]);
+		sectionRect.origin.x = 0.0f;
+		sectionRect.size.width = self.contentView.frame.size.width;
+		
+		if(!CGRectIntersectsRect(clipViewBounds, sectionRect)) {
+			section++;
+			continue;
+		}
+		
+		NSInteger row = 0;
+		for(NSValue* rowRectValue in [sectionInfo objectForKey:@"rows"]) {
+			CGRect rowRect = NSRectToCGRect([rowRectValue rectValue]);
+			rowRect.origin.x = 0.0f;
+			rowRect.size.width = self.contentView.frame.size.width;
+
+			if(!CGRectIntersectsRect(clipViewBounds, rowRect)) {
+				row++;
+				continue;
+			}
+			
+			BOOL skip = NO;
+			for(UIView* view in subviews) {
+				if(![view isKindOfClass:[UITableViewCell class]]) continue;
+				if(CGRectIntersectsRect(rowRect, NSRectToCGRect(view.frame))) {
+					skip = YES;
+					break;
+				}
+			}
+			
+			if(skip) {
+				row++;
+				continue;
+			}
+			
 			NSIndexPath* indexPath = [NSIndexPath indexPathForRow:row inSection:section];
 			
-			if(variableRowHeights) {
-				rowHeight = [self.delegate tableView:self heightForRowAtIndexPath:indexPath];
-			}
+			UITableViewCell* aCell = [self.dataSource tableView:self cellForRowAtIndexPath:indexPath];
+			// if(!aCell.separatorColor) aCell.separatorColor = _separatorColor;
 			
-			CGRect rowRect = CGRectFromOffsetHeight(yOffset, rowHeight);
-			if(CGRectIntersectsRect(clipViewBounds, rowRect)) {
-				UITableViewCell* aCell = [self.dataSource tableView:self cellForRowAtIndexPath:indexPath];
-				if(!aCell.separatorColor) aCell.separatorColor = _separatorColor;
-				
-				aCell.frame = NSMakeRect(0.0f, yOffset, self.documentSize.width, rowHeight);
-				[aCell setNeedsLayout];
-				[aCell setNeedsDisplay];
-				[self.documentView addSubview:aCell];
-				[aCell layoutIfNeeded];
-				[_visibleCells addObject:aCell];
-			}
-			
-			yOffset += rowHeight;
-			
-			if(yOffset > (clipViewBounds.origin.y + clipViewBounds.size.height)) break; // No use continuing at this point
+			aCell.frame = rowRect;
+			[aCell setNeedsLayout];
+			[aCell setNeedsDisplay];
+			[self.documentView addSubview:aCell];
+			[aCell layoutIfNeeded];
+			[_visibleCells addObject:aCell];
+
+			row++;
 		}
+		
+		section++;
+	}
+}
+
+- (void)clearAllCells {
+	[_visibleCells removeAllObjects];
+	
+	for(UITableViewCell* cell in [self.documentView subviews]) {
+		if(![cell isKindOfClass:[UITableViewCell class]]) continue;
+		[self queueReusableCell:cell];
+		[cell removeFromSuperview];
 	}
 }
 
 - (void)removeInvisibleCells {
 	NSMutableSet* cellsToRemove = [NSMutableSet set];
-	//CGRect clipViewBounds = NSRectToCGRect(self.contentView.bounds);
+	CGRect clipViewBounds = NSRectToCGRect(self.contentView.bounds);
+	
 	for(UITableViewCell* cell in [self.documentView subviews]) {
 		if(![cell isKindOfClass:[UITableViewCell class]]) continue;
-		//if(CGRectIntersectsRect(clipViewBounds, NSRectToCGRect(cell.frame))) continue;
+		if(CGRectIntersectsRect(clipViewBounds, NSRectToCGRect(cell.frame))) continue;
 		[cellsToRemove addObject:cell];
 	}
 	
 	[cellsToRemove makeObjectsPerformSelector:@selector(removeFromSuperview)];
-	//[_visibleCells removeObjectsInArray:[cellsToRemove allObjects]];
+	[_visibleCells removeObjectsInArray:[cellsToRemove allObjects]];
 	
 	for(UITableViewCell* cell in cellsToRemove) {
 		[self queueReusableCell:cell];
@@ -193,6 +214,7 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 
 - (void)reflectScrolledClipView:(NSClipView *)aClipView{
 	[super reflectScrolledClipView:aClipView];
+
 	[self removeInvisibleCells];
 	[self layoutVisibleCells];
 }
@@ -236,7 +258,6 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 	[aTableViewCell retain];
 	
 	[[_reusableTableCells objectForKey:identifier] removeObject:aTableViewCell];
-	[aTableViewCell prepareForReuse];
 	
 	return [aTableViewCell autorelease];
 }
@@ -244,6 +265,8 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 - (void)queueReusableCell:(UITableViewCell*)aTableViewCell {
 	if(!aTableViewCell) return;
 	if(!aTableViewCell.reuseIdentifier) return;
+	
+	[aTableViewCell prepareForReuse];
 	
 	if(![_reusableTableCells objectForKey:aTableViewCell.reuseIdentifier]) {
 		[_reusableTableCells setObject:[NSMutableSet setWithCapacity:1] forKey:aTableViewCell.reuseIdentifier];
@@ -253,6 +276,7 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 }
 
 - (void)dealloc {
+	[_sectionData release];
 	[_visibleCells release];
 	[_reusableTableCells release];
 	[super dealloc];

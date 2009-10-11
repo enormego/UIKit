@@ -6,12 +6,13 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKitDefines.h>
 #import <UIKit/UIView.h>
 
 @interface UIScrollView : NSScrollView {
-
+@private
+	UIColor* _backgroundColor;
 }
 
 /*
@@ -24,4 +25,5 @@
 @property(nonatomic,assign) NSSize documentSize; // contentOffset on iPhone
 @property(nonatomic,assign) NSPoint documentOffset; // contentOffset on iPhone
 
+@property(nonatomic,retain) UIColor* backgroundColor;
 @end

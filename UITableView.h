@@ -42,7 +42,7 @@ UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView {
     id<UITableViewDataSource>	_dataSource;
     id<UITableViewDelegate>		_delegate;
     
-    id                          _rowData;
+    NSMutableArray*             _sectionData;
     CGFloat                     _rowHeight;
     CGFloat                     _sectionHeaderHeight;
     CGFloat                     _sectionFooterHeight;

@@ -8,32 +8,23 @@
 
 #import "UIColor.h"
 
-@interface NSColor (UIColor)
-- (CGColorRef)CGColor;
-@end
-
-
 @implementation UIColor
 
 // Convenience methods for creating autoreleased colors
 + (UIColor *)colorWithWhite:(CGFloat)white alpha:(CGFloat)alpha {
-	return (UIColor*)[UIColor colorWithCalibratedWhite:white alpha:alpha];
-	// return [[[UIColor alloc] initWithWhite:white alpha:alpha] autorelease];
+	return [[[UIColor alloc] initWithWhite:white alpha:alpha] autorelease];
 }
 
 + (UIColor *)colorWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha {
-	return (UIColor*)[UIColor colorWithCalibratedHue:hue saturation:saturation brightness:brightness alpha:alpha];
-	// return [[[UIColor alloc] initWithHue:hue saturation:saturation brightness:brightness alpha:alpha] autorelease];
+	return [[[UIColor alloc] initWithHue:hue saturation:saturation brightness:brightness alpha:alpha] autorelease];
 }
 
 + (UIColor *)colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
-	return (UIColor*)[UIColor colorWithCalibratedRed:red green:green blue:blue alpha:alpha];
-	// return [[[UIColor alloc] initWithRed:red green:green blue:blue alpha:alpha] autorelease];
+	return [[[UIColor alloc] initWithRed:red green:green blue:blue alpha:alpha] autorelease];
 }
 
 + (UIColor *)colorWithCGColor:(CGColorRef)cgColor {
-	return (UIColor*)[super colorWithCIColor:[CIColor colorWithCGColor:cgColor]];
-	//return [[[UIColor alloc] initWithCGColor:cgColor] autorelease];
+	return [[[UIColor alloc] initWithCGColor:cgColor] autorelease];
 }
 
 + (UIColor *)colorWithPatternImage:(UIImage *)image {
@@ -42,27 +33,89 @@
 
 // Initializers for creating non-autoreleased colors
 - (UIColor *)initWithWhite:(CGFloat)white alpha:(CGFloat)alpha {
-	return nil;
+	if((self = [super init])) {
+		CGColor = CGColorCreateGenericGray(white, alpha);
+	}
+	
+	return self;
 }
 
 - (UIColor *)initWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha {
-	return nil;
+	hue = roundf(hue * 100) / 100;
+	saturation = roundf(saturation * 100) / 100;
+	brightness = roundf(brightness * 100) / 100;
+
+	NSInteger hexBrightness = (NSInteger)roundf(brightness * 2.55f);
+	NSInteger red = 0;
+	NSInteger green = 0;
+	NSInteger blue = 0;
+
+	if (saturation == 0.0f) {
+		red = green = blue = hexBrightness;
+	} else {
+		
+		NSInteger Hi = floor(hue / 60);
+		NSInteger f = hue / 60 - Hi;
+		NSInteger p = round(brightness * (100 - saturation) * .0255);
+		NSInteger q = round(brightness * (100 - f * saturation) * .0255);
+		NSInteger t = round(brightness * (100 - (1 - f) * saturation) * .0255);
+		
+		switch (Hi) {
+			case 0:
+				red = hexBrightness;
+				green = t;
+				blue = p;
+				break;
+			case 1:
+				red = q;
+				green = hexBrightness;
+				blue = p;
+				break;
+			case 2:
+				red = p;
+				green = hexBrightness;
+				blue = t;
+				break;
+			case 3:
+				red = p;
+				green = q;
+				blue = hexBrightness;
+				break;
+			case 4:
+				red = t;
+				green = p;
+				blue = hexBrightness;
+				break;
+			case 5:
+				red = hexBrightness;
+				green = p;
+				blue = q;
+		}
+	}
+	
+	return [self initWithRed:red/255.0f green:green/255.0f blue:blue/255.0f alpha:alpha];  
 }
 
 - (UIColor *)initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
-	return nil;
+	if((self = [super init])) {
+		CGColor = CGColorCreateGenericRGB(red, green, blue, alpha);
+	}
+	
+	return self;
 }
 
 - (UIColor *)initWithCGColor:(CGColorRef)cgColor {
-	return nil;
+	if((self = [super init])) {
+		CGColor = CGColorRetain(cgColor);
+	}
+	
+	return self;
 }
 
 - (UIColor *)initWithPatternImage:(UIImage*)image {
 	return nil;
 }
 
-// Some convenience methods to create colors.  These colors will be as calibrated as possible.
-// These colors are cached.
 + (UIColor *)blackColor {
 	return [UIColor colorWithWhite:0.0f alpha:1.0f];
 }
@@ -125,56 +178,47 @@
 
 // Set the color: Sets the fill and stroke colors in the current drawing context. Should be implemented by subclassers.
 - (void)set {
-	[super set];	
+	// Not sure
 }
 
 // Set the fill or stroke colors individually. These should be implemented by subclassers.
 - (void)setFill {
-	[super setFill];
+	// Not sure
 }
 
 - (void)setStroke {
-	[super setStroke];
+	// Not sure
 }
 
 // Returns a color in the same color space as the receiver with the specified alpha component.
 - (UIColor *)colorWithAlphaComponent:(CGFloat)alpha {
-	return nil;
+	CGColorRef cgColor = CGColorCreateCopyWithAlpha(self.CGColor, alpha);
+	UIColor* color = [UIColor colorWithCGColor:cgColor];
+	CGColorRelease(cgColor);
+	return color;
 }
 
 - (CGColorRef)CGColor {
-	return [super CGColor];
+	return CGColor;
 }
 
-
-@end
-
-@implementation NSColor (UIColor)
-
-- (CGColorRef)CGColor {
-	if([[self colorSpaceName] isEqualToString:NSDeviceCMYKColorSpace]) {
-		float components[5];
-		
-		[self getCyan:&components[0]
-			  magenta:&components[1]
-			   yellow:&components[2]
-				black:&components[3]
-				alpha:&components[4]
-		 ];
-		
-		return CGAutorelease(CGColorCreate([[self colorSpace] CGColorSpace], components));
-	} else {
-		NSColor* deviceColor = [self colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-		
-		float components[4];
-		
-		[deviceColor getRed:&components[0]
-					  green:&components[1]
-					   blue:&components[2]
-					  alpha:&components[3]];
-		
-		return CGAutorelease(CGColorCreate([[deviceColor colorSpace] CGColorSpace], components));
-	}
+- (NSColor*)NSColor {
+	NSColorSpace* colorSpace = [[[NSColorSpace alloc] initWithCGColorSpace:CGColorGetColorSpace(self.CGColor)] autorelease];
+	const CGFloat* components = (const CGFloat*)CGColorGetComponents(self.CGColor);
+	NSInteger numberOfComponents = CGColorGetNumberOfComponents(self.CGColor);
+	
+	return [NSColor colorWithColorSpace:colorSpace components:components count:numberOfComponents];
 }
+
+- (BOOL)isEqual:(UIColor*)aColor {
+	if(![aColor isKindOfClass:[UIColor class]]) return NO;
+	return CGColorEqualToColor(self.CGColor, aColor.CGColor);
+}
+
+- (void)dealloc {
+	CGColorRelease(CGColor);
+	[super dealloc];
+}
+
 
 @end
