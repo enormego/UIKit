@@ -20,6 +20,7 @@
 		280934421013A99F00AE0F9A /* UIFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 280934401013A99F00AE0F9A /* UIFont.m */; };
 		28093688101560AF00AE0F9A /* UITextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 28093686101560AF00AE0F9A /* UITextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		28093689101560AF00AE0F9A /* UITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 28093687101560AF00AE0F9A /* UITextField.m */; };
+		280A6E3D1083B56E00D056F0 /* UIText.h in Headers */ = {isa = PBXBuildFile; fileRef = 280A6E3B1083B56E00D056F0 /* UIText.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		284CBB3C0FAA51AA007DBD91 /* UIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 284CBB3A0FAA51AA007DBD91 /* UIView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		284CBB3D0FAA51AA007DBD91 /* UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 284CBB3B0FAA51AA007DBD91 /* UIView.m */; };
 		284CBB420FAA51B4007DBD91 /* UITableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 284CBB400FAA51B4007DBD91 /* UITableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -53,6 +54,7 @@
 		280934401013A99F00AE0F9A /* UIFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFont.m; sourceTree = "<group>"; };
 		28093686101560AF00AE0F9A /* UITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextField.h; sourceTree = "<group>"; };
 		28093687101560AF00AE0F9A /* UITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextField.m; sourceTree = "<group>"; };
+		280A6E3B1083B56E00D056F0 /* UIText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIText.h; sourceTree = "<group>"; };
 		284CBB3A0FAA51AA007DBD91 /* UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIView.h; sourceTree = "<group>"; };
 		284CBB3B0FAA51AA007DBD91 /* UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIView.m; sourceTree = "<group>"; };
 		284CBB400FAA51B4007DBD91 /* UITableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableView.h; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				280A6E3B1083B56E00D056F0 /* UIText.h */,
 				284CBB9D0FAA53D7007DBD91 /* UIKitDefines.h */,
 				284CBB4D0FAA5201007DBD91 /* UIKit.h */,
 				284CBB3A0FAA51AA007DBD91 /* UIView.h */,
@@ -198,6 +201,7 @@
 				280932EE10139A5700AE0F9A /* UITableViewCell-Private.h in Headers */,
 				280934411013A99F00AE0F9A /* UIFont.h in Headers */,
 				28093688101560AF00AE0F9A /* UITextField.h in Headers */,
+				280A6E3D1083B56E00D056F0 /* UIText.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

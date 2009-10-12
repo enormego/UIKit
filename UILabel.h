@@ -6,32 +6,36 @@
 //  Copyright 2009 enormego. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import <UIKit/UIText.h>
 #import <UIKit/UIView.h>
 #import <UIKit/UIColor.h>
-#import <UIKit/UIFont.h>
 
-@class UITextField;
+// TODO: Fix Shadows.  For some reason CATextLayer is ignoring it's shadow property
+
+@class CATextLayer;
 @interface UILabel : UIView {
 @private
-	NSString* text;
-	NSFont* font;
-	UIColor* textColor;
-	UIColor* highlightedTextColor;
-	BOOL isHighlighted;
-	UIColor* shadowColor;
-	NSSize shadowOffset;
-	UITextField* _textField;
+	CATextLayer* _textLayer;
+	NSString* _text;
+	NSFont* _font;
+	UIColor* _textColor;
+	UIColor* _shadowColor;
+	UIColor* _highlightedTextColor;
+	CGSize _shadowOffset;
+	BOOL _highlighted;
+	UITextAlignment _textAlignment;
+	UILineBreakMode _lineBreakMode;
 }
 
 @property(nonatomic,copy) NSString* text;
 @property(nonatomic,retain) NSFont* font;
 @property(nonatomic,retain) UIColor* textColor;
+@property(nonatomic,retain) UIColor* shadowColor;
+@property(nonatomic,assign) CGSize shadowOffset;
+@property(nonatomic,assign) UITextAlignment textAlignment;
+@property(nonatomic,assign) UILineBreakMode lineBreakMode;
+
 @property(nonatomic,retain) UIColor* highlightedTextColor;
 @property(nonatomic,assign,getter=isHighlighted) BOOL highlighted;
-@property(nonatomic,retain) UIColor* shadowColor;
-@property(nonatomic,assign) NSSize shadowOffset;
-
-// Only on UIKit-Mac.  Apple's iPhone framework does not have this.
-@property(nonatomic,assign,getter=isSelectable) BOOL selectable;
 @end

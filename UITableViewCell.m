@@ -62,7 +62,7 @@
 		if(!_textLabel) {
 			_textLabel = [[UILabel alloc] initWithFrame:_contentView.bounds];
 			_textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-			_textLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+			_textLabel.font = [NSFont boldSystemFontOfSize:17.0f];
 			_textLabel.backgroundColor = self.backgroundColor;
 			_textLabel.textColor = [UIColor blackColor];
 			

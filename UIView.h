@@ -38,5 +38,6 @@ enum {
 @end
 
 @interface NSView (UIViewLayerBacking)
+@property(nonatomic,assign,getter=isHidden) BOOL hidden;
 @property(nonatomic,retain) CALayer* layer;
 @end
