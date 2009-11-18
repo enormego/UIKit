@@ -155,11 +155,11 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 		
 		NSInteger row = 0;
 		for(NSValue* rowRectValue in [sectionInfo objectForKey:@"rows"]) {
-			CGRect rowRect = NSRectToCGRect([rowRectValue rectValue]);
+			NSRect rowRect = [rowRectValue rectValue];
 			rowRect.origin.x = 0.0f;
 			rowRect.size.width = self.contentView.frame.size.width;
 
-			if(!CGRectIntersectsRect(clipViewBounds, rowRect)) {
+			if(!CGRectIntersectsRect(clipViewBounds, NSRectToCGRect(rowRect))) {
 				row++;
 				continue;
 			}
@@ -167,7 +167,7 @@ static inline CGRect CGRectFromOffsetHeight(float offset, float height) {
 			BOOL skip = NO;
 			for(UIView* view in subviews) {
 				if(![view isKindOfClass:[UITableViewCell class]]) continue;
-				if(CGRectIntersectsRect(rowRect, NSRectToCGRect(view.frame))) {
+				if(CGRectIntersectsRect(NSRectToCGRect(rowRect), NSRectToCGRect(view.frame))) {
 					skip = YES;
 					break;
 				}

@@ -18,7 +18,7 @@
 @implementation UITextField
 @synthesize backgroundColor, textColor;
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(NSRect)frame {
 	if((self = [super initWithFrame:(NSRect)frame])) {
 		[self setDrawsBackground:NO];
 	}

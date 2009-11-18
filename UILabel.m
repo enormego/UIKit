@@ -16,7 +16,7 @@
 @synthesize textAlignment=_textAlignment, lineBreakMode=_lineBreakMode;
 @synthesize highlighted=_highlighted, highlightedTextColor=_highlightedTextColor;
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(NSRect)frame {
     if (self = [super initWithFrame:frame]) {
 		self.layer = [CATextLayer layer];
 		self.textColor = [UIColor blackColor];

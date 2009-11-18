@@ -174,7 +174,7 @@ UIKIT_EXTERN_CLASS @interface UITableView : UIScrollView {
     unsigned int _lastSelectedSection;
     unsigned int _lastSelectedRow;
 	
-	CGPoint liveResizeScrollOffset;
+	NSPoint liveResizeScrollOffset;
 }
 
 @property(nonatomic,readonly) UITableViewStyle           style;

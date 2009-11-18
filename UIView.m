@@ -14,8 +14,8 @@
 @implementation UIView
 @synthesize backgroundColor=_backgroundColor;
 
-- (id)initWithFrame:(CGRect)frame {
-	if((self = [super initWithFrame:(NSRect)frame])) {
+- (id)initWithFrame:(NSRect)frame {
+	if((self = [super initWithFrame:frame])) {
 		[self setLayer:[CALayer layer]];
 	}
 	

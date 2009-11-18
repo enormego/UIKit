@@ -26,8 +26,6 @@ enum {
 	BOOL _needsLayout;
 }
 
-- (id)initWithFrame:(CGRect)frame;
-
 - (void)setNeedsDisplay;
 
 - (void)setNeedsLayout;

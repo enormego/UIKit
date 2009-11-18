@@ -8,6 +8,9 @@
 
 #import "UIColor.h"
 
+CGPatternRef CreateImagePattern(CGImageRef image);
+CGColorRef CreatePatternColor(CGImageRef image);	
+
 @implementation UIColor
 
 // Convenience methods for creating autoreleased colors
@@ -29,6 +32,10 @@
 
 + (UIColor *)colorWithPatternImage:(UIImage *)image {
 	return [[[UIColor alloc] initWithPatternImage:image] autorelease];
+}
+
++ (UIColor *)colorWithPatternImageRef:(CGImageRef)imageRef {
+	return [[[UIColor alloc] initWithPatternImageRef:imageRef] autorelease];
 }
 
 // Initializers for creating non-autoreleased colors
@@ -114,6 +121,14 @@
 
 - (UIColor *)initWithPatternImage:(UIImage*)image {
 	return nil;
+}
+
+- (UIColor *)initWithPatternImageRef:(CGImageRef)imageRef {
+	if((self = [super init])) {
+		CGColor = CreatePatternColor(imageRef);	
+	}
+	
+	return self;
 }
 
 + (UIColor *)blackColor {
@@ -222,3 +237,48 @@
 
 
 @end
+
+
+/*
+ * @see http://developer.apple.com/mac/library/samplecode/GeekGameBoard/listing38.html
+ */
+
+// callback for CreateImagePattern.
+static void drawPatternImage (void *info, CGContextRef ctx) {
+    CGImageRef image = (CGImageRef) info;
+    CGContextDrawImage(ctx, 
+                       CGRectMake(0,0, CGImageGetWidth(image),CGImageGetHeight(image)),
+                       image);
+}
+
+// callback for CreateImagePattern.
+static void releasePatternImage( void *info ) {
+    CGImageRelease( (CGImageRef)info );
+}
+
+
+CGPatternRef CreateImagePattern(CGImageRef image) {
+    NSCParameterAssert(image);
+    int width = CGImageGetWidth(image);
+    int height = CGImageGetHeight(image);
+    static const CGPatternCallbacks callbacks = {0, &drawPatternImage, &releasePatternImage};
+    return CGPatternCreate (image,
+                            CGRectMake (0, 0, width, height),
+                            CGAffineTransformMake (1, 0, 0, 1, 0, 0),
+                            width,
+                            height,
+                            kCGPatternTilingConstantSpacing,
+                            true,
+                            &callbacks);
+}
+
+
+CGColorRef CreatePatternColor(CGImageRef image) {
+    CGPatternRef pattern = CreateImagePattern(image);
+    CGColorSpaceRef space = CGColorSpaceCreatePattern(NULL);
+    CGFloat components[1] = {1.0};
+    CGColorRef color = CGColorCreateWithPattern(space, pattern, components);
+    CGColorSpaceRelease(space);
+    CGPatternRelease(pattern);
+    return color;
+}
